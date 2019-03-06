@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  annotations:
+    csi.volume.kubernetes.io/volume-attributes: '{"keep":"false","foronepod":"true"}'
+    io.enndata.user/alpha-pvhostpathquotaforonepod: "true"
+    io.enndata.user/alpha-pvhostpathmountpolicy: "none"
+  name: nonetruepv
+spec:
+  accessModes:
+  - ReadWriteMany
+  capacity:
+    storage: 50Mi 
+  csi:
+    driver: xfshostpathplugin
+    volumeHandle: csi-xfshostpath-patricktest-nonetruepv1
+  persistentVolumeReclaimPolicy: Retain  

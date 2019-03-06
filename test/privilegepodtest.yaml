@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: privilegepodtest
+  namespace: patricktest
+spec:
+  containers:
+  - name: test
+    image: busybox
+    securityContext:
+       privileged: true
+    command:
+       - "sleep"
+       - "1000000000"
+    resources:
+      limits:
+        cpu: 200m
+        memory: 256Mi
+      requests:
+        cpu: 200m
+        memory: 256Mi

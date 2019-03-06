@@ -1,0 +1,78 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: hppvr-admission-controller
+  namespace: k8splugin
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hppvr-admission-controller
+  namespace: k8splugin
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: hppvr-admission-controller
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+             labelSelector:
+               matchExpressions:
+               - key: app
+                 operator: In
+                 values:
+                 - hppvr-admission-controller
+             namespaces:
+             - k8splugin
+             topologyKey: kubernetes.io/hostname
+            weight: 1
+      serviceAccountName: hppvr-admission-controller
+      containers:
+      - name: admission-controller
+        image: ihub.helium.io:29006/library/hppvr-admission-controller:v0.1.0
+        command:
+          - /hostpathpvresource
+          - --v=4 
+          - --stderrthreshold=info
+          - --config-name=hostpathpvresource
+          - --servername=hppvr-webhook
+          - --auto-regist-config=true
+          - --metric-address=:8001
+          - --address=:8000
+        imagePullPolicy: Always
+        volumeMounts:
+          - name: tls-certs
+            mountPath: "/etc/tls-certs"
+            readOnly: true
+        resources:
+          limits:
+            cpu: 200m
+            memory: 500Mi
+          requests:
+            cpu: 50m
+            memory: 200Mi
+      volumes:
+        - name: tls-certs
+          secret:
+            secretName: hppvr-tls-certs
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hppvr-webhook
+  namespace: k8splugin
+spec:
+  ports:
+    - port: 443
+      name: https-server
+      targetPort: 8000
+      nodePort: 29108
+  type: NodePort
+  selector:
+    app: hppvr-admission-controller
+
+

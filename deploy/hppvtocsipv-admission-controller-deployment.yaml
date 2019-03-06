@@ -1,0 +1,80 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: hppvtocsipv-admission-controller
+  namespace: k8splugin
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hppvtocsipv-admission-controller
+  namespace: k8splugin
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: hppvtocsipv-admission-controller
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+             labelSelector:
+               matchExpressions:
+               - key: app
+                 operator: In
+                 values:
+                 - hppvtocsipv-admission-controller
+             namespaces:
+             - k8splugin
+             topologyKey: kubernetes.io/hostname
+            weight: 1
+      serviceAccountName: hppvtocsipv-admission-controller
+      containers:
+      - name: admission-controller
+        image: {hppvtocsipv-image}
+        command:
+          - /hppvtocsipv
+          - --v=4 
+          - --stderrthreshold=info
+          - --config-name=hppvtocispv
+          - --servername=hppvtocsipv-webhook
+          - --auto-regist-config=true
+          - --metric-address=:8001
+          - --address=:8000
+          - --update-hostpathpv-csi=false
+          - --update-hostpathpv-csi-interval=60s
+        imagePullPolicy: Always
+        volumeMounts:
+          - name: tls-certs
+            mountPath: "/etc/tls-certs"
+            readOnly: true
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 50m
+            memory: 100Mi
+      volumes:
+        - name: tls-certs
+          secret:
+            secretName: hppvtocsipv-tls-certs
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hppvtocsipv-webhook
+  namespace: k8splugin
+spec:
+  ports:
+    - port: 443
+      name: https-server
+      targetPort: 8000
+      nodePort: 29109
+  type: NodePort
+  selector:
+    app: hppvtocsipv-admission-controller
+
+

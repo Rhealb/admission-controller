@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  annotations:
+    csi.volume.kubernetes.io/volume-attributes: '{"keep":"true","foronepod":"true"}'
+    io.enndata.user/alpha-pvhostpathquotaforonepod: "true"
+    io.enndata.user/alpha-pvhostpathmountpolicy: "keep"
+  name: keeptruepv2
+spec:
+  accessModes:
+  - ReadWriteMany
+  capacity:
+    storage: 50Mi 
+  hostPath:
+    path: /tmp
+  persistentVolumeReclaimPolicy: Retain  

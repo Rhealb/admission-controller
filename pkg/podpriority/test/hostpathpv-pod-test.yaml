@@ -1,0 +1,64 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  annotations:
+    csi.volume.kubernetes.io/volume-attributes: '{"keep":"true","foronepod":"true"}'
+    io.enndata.user/alpha-pvhostpathquotaforonepod: "true"
+    io.enndata.user/alpha-pvhostpathmountpolicy: "keep"
+  name: pod-priority-pv
+spec:
+  accessModes:
+  - ReadWriteMany
+  capacity:
+    storage: 50Mi 
+  csi:
+    driver: xfshostpathplugin
+    volumeHandle: csi-xfshostpath-patricktest-pod-priority-pv
+  persistentVolumeReclaimPolicy: Retain  
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:   
+  name: pod-priority-pvc
+  namespace: patricktest 
+spec:
+  volumeName: pod-priority-pv
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Mi
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: pod-priority-hostpath-test
+spec:
+  replicas: 1
+  template:
+     metadata:
+       labels:
+         name: pod-priority-hostpath-test
+     spec:
+        volumes:
+        - name: pvc1
+          persistentVolumeClaim:
+            claimName: pod-priority-pvc
+        containers:
+          - name: test
+            image: busybox
+            imagePullPolicy: IfNotPresent
+            volumeMounts:
+            - mountPath: /mnt/data1
+              name: pvc1
+            command:
+            - "sleep"
+            - "1000000000"
+            resources:
+              limits:
+                cpu: 6000m
+                memory: 128Mi
+              requests:
+                cpu: 6000m
+                memory: 128Mi
+ 
