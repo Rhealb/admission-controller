@@ -59,7 +59,7 @@ var (
 		{
 			Name:          "enndata-podpriority-default",
 			Value:         1000,
-			GlobalDefault: true,
+			GlobalDefault: false,
 			Description:   "default PriorityClass",
 		},
 		{

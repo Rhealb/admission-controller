@@ -1,6 +1,6 @@
 all: build
 
-TAG?=v0.1.0
+TAG?=v0.1.3
 REGISTRY?=ihub.helium.io:29006
 FLAGS=
 ENVVAR=

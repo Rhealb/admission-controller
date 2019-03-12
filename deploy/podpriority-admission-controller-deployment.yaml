@@ -33,7 +33,7 @@ spec:
       serviceAccountName: podpriority-admission-controller
       containers:
       - name: admission-controller
-        image: ihub.helium.io:29006/library/podpriority-admission-controller:v0.1.0
+        image: ihub.helium.io:29006/library/podpriority-admission-controller:v0.1.3
         command:
           - /podpriority
           - --system-namespaces=k8splugin,kube-system,ceph
