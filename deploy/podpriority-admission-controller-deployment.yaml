@@ -33,7 +33,7 @@ spec:
       serviceAccountName: podpriority-admission-controller
       containers:
       - name: admission-controller
-        image: {hppvtocsipv-image}
+        image: {image}
         command:
           - /podpriority
           - --system-namespaces=k8splugin,kube-system,ceph

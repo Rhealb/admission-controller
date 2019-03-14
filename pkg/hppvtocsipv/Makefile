@@ -44,7 +44,7 @@ deletehookconfig:
 install: deletehookconfig deletedeploy
 	./gencerts.sh
 	echo ${IMAGENAME}
-	@cat ../../deploy/hppvtocsipv-admission-controller-deployment.yaml | sed "s!{hppvtocsipv-image}!${IMAGENAME}!g" > ../../deploy/tmp.yaml
+	@cat ../../deploy/hppvtocsipv-admission-controller-deployment.yaml | sed "s!{image}!${IMAGENAME}!g" > ../../deploy/tmp.yaml
 	kubectl create -f ../../deploy/tmp.yaml
 	@rm ../../deploy/tmp.yaml
 

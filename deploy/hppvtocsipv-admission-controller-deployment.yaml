@@ -33,7 +33,7 @@ spec:
       serviceAccountName: hppvtocsipv-admission-controller
       containers:
       - name: admission-controller
-        image: {hppvtocsipv-image}
+        image: {image}
         command:
           - /hppvtocsipv
           - --v=4 

@@ -33,7 +33,7 @@ spec:
       serviceAccountName: nshp-admission-controller
       containers:
       - name: admission-controller
-        image: {hppvtocsipv-image}
+        image: {image}
         command:
           - /nshostpathprivilege
           - --v=4 

@@ -48,7 +48,7 @@ deletehookconfig:
 
 install: deletehookconfig deletedeploy
 	@./gencerts.sh
-	@cat ../../deploy/nshp-admission-controller-deployment.yaml | sed "s!{hppvtocsipv-image}!${IMAGENAME}!g" > ../../deploy/tmp.yaml
+	@cat ../../deploy/nshp-admission-controller-deployment.yaml | sed "s!{image}!${IMAGENAME}!g" > ../../deploy/tmp.yaml
 	@kubectl label ns k8splugin enndata.cn/ignore-admission-controller-webhook=true --overwrite=true
 	kubectl create -f ../../deploy/tmp.yaml
 	@rm ../../deploy/tmp.yaml
