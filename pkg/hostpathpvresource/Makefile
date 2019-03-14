@@ -43,6 +43,7 @@ deletehookconfig:
 	@kubectl delete MutatingWebhookConfiguration  hostpathpvresource 1>/dev/null 2>/dev/null || true
 
 install: deletehookconfig deletedeploy
+	./gencerts.sh
 	@cat ../../deploy/hppvr-admission-controller-deployment.yaml | sed "s!{image}!${IMAGENAME}!g" > ../../deploy/tmp.yaml
 	@kubectl label ns k8splugin enndata.cn/ignore-admission-controller-webhook=true --overwrite=true
 	kubectl create -f ../../deploy/tmp.yaml
