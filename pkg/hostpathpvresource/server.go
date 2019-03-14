@@ -24,8 +24,8 @@ import (
 	"net/http"
 	"sort"
 
-	"k8s-plugins/admission-controller/pkg/utils/metrics"
-	"k8s-plugins/extender-scheduler/pkg/algorithm"
+	"github.com/Rhealb/admission-controller/pkg/utils/metrics"
+	"github.com/Rhealb/extender-scheduler/pkg/algorithm"
 
 	"github.com/golang/glog"
 	"github.com/mattbaird/jsonpatch"

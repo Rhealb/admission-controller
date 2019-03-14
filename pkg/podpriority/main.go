@@ -19,11 +19,12 @@ package main
 import (
 	"flag"
 	"fmt"
-	"k8s-plugins/admission-controller/pkg/common"
-	"k8s-plugins/admission-controller/pkg/utils/metrics"
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/Rhealb/admission-controller/pkg/common"
+	"github.com/Rhealb/admission-controller/pkg/utils/metrics"
 
 	"github.com/golang/glog"
 	"k8s.io/api/scheduling/v1beta1"

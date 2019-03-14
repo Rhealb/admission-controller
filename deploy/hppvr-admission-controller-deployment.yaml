@@ -33,7 +33,7 @@ spec:
       serviceAccountName: hppvr-admission-controller
       containers:
       - name: admission-controller
-        image: ihub.helium.io:29006/library/hppvr-admission-controller:v0.1.0
+        image: {hppvtocsipv-image}
         command:
           - /hostpathpvresource
           - --v=4 
@@ -70,7 +70,7 @@ spec:
     - port: 443
       name: https-server
       targetPort: 8000
-      nodePort: 29108
+      nodePort: 29110
   type: NodePort
   selector:
     app: hppvr-admission-controller

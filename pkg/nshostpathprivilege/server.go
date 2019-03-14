@@ -24,7 +24,7 @@ import (
 	"net/http"
 	"time"
 
-	"k8s-plugins/admission-controller/pkg/utils/metrics"
+	"github.com/Rhealb/admission-controller/pkg/utils/metrics"
 
 	"github.com/golang/glog"
 	"k8s.io/api/admission/v1beta1"

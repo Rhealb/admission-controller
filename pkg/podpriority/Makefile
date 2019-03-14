@@ -1,13 +1,14 @@
 all: build
 
-TAG?=v0.1.3
+TAG?=v1.0.0
 REGISTRY?=ihub.helium.io:29006
 FLAGS=
 ENVVAR=
 GOOS?=linux
 ROOTPATH=`cd ../../; pwd` 
 BUILDGOPATH=/tmp/k8splugin-build
-BUILDPATH=$(BUILDGOPATH)/src/k8s-plugins/admission-controller/pkg/podpriority
+BUILDPATH=$(BUILDGOPATH)/src/github.com/Rhealb/admission-controller/pkg/podpriority
+IMAGENAME=${REGISTRY}/library/podpriority-admission-controller:${TAG}
 
 .IGNORE : deletehookconfig
 .IGNORE : deletedeploy
@@ -17,11 +18,11 @@ deps:
 	@go get github.com/tools/godep
 	
 buildEnvClean:
-	@rm $(BUILDGOPATH)/src/k8s-plugins/admission-controller 1>/dev/null 2>/dev/null || true
+	@rm -rf $(BUILDGOPATH) 1>/dev/null 2>/dev/null || true
 
 buildEnv: buildEnvClean
-	@mkdir -p $(BUILDGOPATH)/src/k8s-plugins/ 1>/dev/null 2>/dev/null
-	@ln -s $(ROOTPATH) $(BUILDGOPATH)/src/k8s-plugins/admission-controller
+	@mkdir -p $(BUILDGOPATH)/src/github.com/Rhealb/ 1>/dev/null 2>/dev/null
+	@ln -s $(ROOTPATH) $(BUILDGOPATH)/src/github.com/Rhealb/admission-controller
 	
 build: buildEnv clean deps 
 	@cd $(BUILDPATH) && GOPATH=$(BUILDGOPATH) $(ENVVAR) GOOS=$(GOOS) CGO_ENABLED=0   godep go build ./...
@@ -43,7 +44,7 @@ deletehookconfig:
 
 install: deletehookconfig deletedeploy
 	./gencerts.sh
-	@cat ../../deploy/podpriority-admission-controller-deployment.yaml | sed "s/ihub.helium.io:29006/$(REGISTRY)/g" > ../../deploy/tmp.yaml
+	@cat ../../deploy/podpriority-admission-controller-deployment.yaml | sed "s!{hppvtocsipv-image}!${IMAGENAME}!g" > ../../deploy/tmp.yaml
 	kubectl create -f ../../deploy/tmp.yaml
 	@rm ../../deploy/tmp.yaml
 

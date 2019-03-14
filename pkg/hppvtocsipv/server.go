@@ -26,7 +26,7 @@ import (
 	"net/http"
 	"sort"
 
-	"k8s-plugins/admission-controller/pkg/utils/metrics"
+	"github.com/Rhealb/admission-controller/pkg/utils/metrics"
 
 	"github.com/golang/glog"
 	"github.com/mattbaird/jsonpatch"

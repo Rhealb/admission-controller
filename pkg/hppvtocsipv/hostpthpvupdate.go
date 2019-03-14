@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	hostpathcmd "k8s-plugins/kubectl-plugins/hostpathpv/pkg/cmd"
+	hostpathcmd "github.com/Rhealb/kubectl-plugins/hostpathpv/pkg/cmd"
 
 	"github.com/golang/glog"
 	"k8s.io/api/core/v1"

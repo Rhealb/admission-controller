@@ -18,14 +18,15 @@ package main
 
 import (
 	"flag"
-	"k8s-plugins/admission-controller/pkg/utils/metrics"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
-	"k8s-plugins/admission-controller/pkg/common"
+	"github.com/Rhealb/admission-controller/pkg/utils/metrics"
+
+	"github.com/Rhealb/admission-controller/pkg/common"
 
 	"github.com/golang/glog"
 	kube_flag "k8s.io/apiserver/pkg/util/flag"
